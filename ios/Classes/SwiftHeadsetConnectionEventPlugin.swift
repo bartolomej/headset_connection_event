@@ -32,25 +32,25 @@ public class SwiftHeadsetConnectionEventPlugin: NSObject, FlutterPlugin {
 
         commandCenter.playCommand.isEnabled = true
         commandCenter.playCommand.addTarget { event in
-            print("Play command received")
+            self.channel!.invokeMethod("playButton",arguments: "true")
             return .success
         }
 
         commandCenter.pauseCommand.isEnabled = true
         commandCenter.pauseCommand.addTarget { event in
-            print("Pause command received")
+            self.channel!.invokeMethod("pauseButton",arguments: "true")
             return .success
         }
         
         commandCenter.nextTrackCommand.isEnabled = true
         commandCenter.nextTrackCommand.addTarget { event in
-            print("Next track command received")
+            self.channel!.invokeMethod("nextButton",arguments: "true")
             return .success
         }
         
         commandCenter.previousTrackCommand.isEnabled = true
         commandCenter.previousTrackCommand.addTarget { event in
-            print("Previous track command received")
+            self.channel!.invokeMethod("prevButton",arguments: "true")
             return .success
         }
     }
