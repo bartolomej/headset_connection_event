@@ -18,13 +18,14 @@ public class SwiftHeadsetConnectionEventPlugin: NSObject, FlutterPlugin {
     public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
         if (call.method == "getCurrentState"){
             result(HeadsetIsConnect())
+        } else if (call.method == "registerCommands") {
+            setupRemoteCommandCenter()
         }
     }
     
     public override init() {
         super.init()
         registerAudioRouteChangeBlock()
-        setupRemoteCommandCenter()
     }
 
     private func setupRemoteCommandCenter() {

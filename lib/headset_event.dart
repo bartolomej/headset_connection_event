@@ -58,7 +58,8 @@ class HeadsetEvent {
 
   //Sets a callback that is called whenever a change in [HeadsetState] happens.
   //Callback function [onPlugged] must accept a [HeadsetState] parameter.
-  void setListener(DetectPluggedCallback onPlugged) {
+  void setListener(DetectPluggedCallback onPlugged) async {
+    await _channel.invokeMethod<int?>('registerCommands');
     _detectPluggedCallback = onPlugged;
     _channel.setMethodCallHandler(_handleMethod);
   }
