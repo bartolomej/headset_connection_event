@@ -1,7 +1,7 @@
 import Flutter
 import UIKit
 import AVFoundation
-
+import MediaPlayer
 
 public class SwiftHeadsetConnectionEventPlugin: NSObject, FlutterPlugin {
     var channel : FlutterMethodChannel?
@@ -18,12 +18,42 @@ public class SwiftHeadsetConnectionEventPlugin: NSObject, FlutterPlugin {
     public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
         if (call.method == "getCurrentState"){
             result(HeadsetIsConnect())
+        } else if (call.method == "registerCommands") {
+            setupRemoteCommandCenter()
         }
     }
     
     public override init() {
         super.init()
         registerAudioRouteChangeBlock()
+    }
+
+    private func setupRemoteCommandCenter() {
+        let commandCenter = MPRemoteCommandCenter.shared()
+
+        commandCenter.playCommand.isEnabled = true
+        commandCenter.playCommand.addTarget { event in
+            self.channel!.invokeMethod("playButton",arguments: "true")
+            return .success
+        }
+
+        commandCenter.pauseCommand.isEnabled = true
+        commandCenter.pauseCommand.addTarget { event in
+            self.channel!.invokeMethod("pauseButton",arguments: "true")
+            return .success
+        }
+        
+        commandCenter.nextTrackCommand.isEnabled = true
+        commandCenter.nextTrackCommand.addTarget { event in
+            self.channel!.invokeMethod("nextButton",arguments: "true")
+            return .success
+        }
+        
+        commandCenter.previousTrackCommand.isEnabled = true
+        commandCenter.previousTrackCommand.addTarget { event in
+            self.channel!.invokeMethod("prevButton",arguments: "true")
+            return .success
+        }
     }
     
     // AVAudioSessionRouteChange notification is Detaction Headphone connection status

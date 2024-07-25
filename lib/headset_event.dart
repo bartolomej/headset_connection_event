@@ -6,12 +6,7 @@ import 'package:permission_handler/permission_handler.dart';
 
 typedef DetectPluggedCallback = Function(HeadsetState payload);
 
-enum HeadsetState {
-  CONNECT,
-  DISCONNECT,
-  NEXT,
-  PREV,
-}
+enum HeadsetState { CONNECT, DISCONNECT, NEXT, PREV, PLAY, PAUSE }
 
 /*
 The HeadsetEvent class allows you to listen to different headset status changes.
@@ -63,7 +58,8 @@ class HeadsetEvent {
 
   //Sets a callback that is called whenever a change in [HeadsetState] happens.
   //Callback function [onPlugged] must accept a [HeadsetState] parameter.
-  void setListener(DetectPluggedCallback onPlugged) {
+  void setListener(DetectPluggedCallback onPlugged) async {
+    await _channel.invokeMethod<int?>('registerCommands');
     _detectPluggedCallback = onPlugged;
     _channel.setMethodCallHandler(_handleMethod);
   }
@@ -83,6 +79,10 @@ class HeadsetEvent {
         return callback(HeadsetState.NEXT);
       case "prevButton":
         return callback(HeadsetState.PREV);
+      case "playButton":
+        return callback(HeadsetState.PLAY); 
+      case "pauseButton":
+        return callback(HeadsetState.PAUSE);
     }
   }
 }
