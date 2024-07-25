@@ -1,7 +1,7 @@
 import Flutter
 import UIKit
 import AVFoundation
-
+import MediaPlayer
 
 public class SwiftHeadsetConnectionEventPlugin: NSObject, FlutterPlugin {
     var channel : FlutterMethodChannel?
